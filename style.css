@@ -66,15 +66,26 @@ main {
   border-top-left-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
 }
-.loading {
+.loadingbox {
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin: 0;
-  margin-top: 40%;
+  align-items: center;
 }
-.loading p {
-  font-size: 50px;
+.loading {
+  border: 3px solid rgb(236, 232, 232);
+  border-top: 3px solid rgba(83, 85, 86, 1);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 #characters {
   background-color: rgba(196, 196, 196, 1);
@@ -91,9 +102,8 @@ main {
   min-height: 44%;
   display: flex;
   flex-direction: column;
-
 }
-#details{
+#details {
   min-height: 100%;
 }
 #detailsInfoBottom {
@@ -105,7 +115,7 @@ main {
   max-width: 340px;
   background-color: rgba(142, 142, 142, 1);
 }
-#characterList >* {
+#characterList > * {
   padding: 0.5rem;
   list-style: none;
   font-family: "Roboto Flex", sans-serif;
@@ -125,30 +135,28 @@ main {
   background-color: rgba(142, 142, 142, 1);
   color: rgba(255, 255, 255, 1);
 }
-.active  {
-  background-color: #444444 !important; 
+.active {
+  background-color: #444444 !important;
   color: #ffffff !important;
 }
 #detailsList,
-#detailsListBottom{
-
+#detailsListBottom {
   list-style: none;
   letter-spacing: 0.25rem;
- padding-left: .5rem;
+  padding-left: 0.5rem;
 }
-#nameHeader, #planetHeader{
+#nameHeader,
+#planetHeader {
   font-size: 1.8rem;
   letter-spacing: 0.25rem;
-
 }
 footer {
   align-items: center;
   justify-content: center;
-display: flex;
+  display: flex;
   font-size: 1.875rem;
   letter-spacing: 0.4rem;
-  
 }
-footer svg{
+footer svg {
   cursor: pointer;
 }
