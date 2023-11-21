@@ -1,0 +1,154 @@
+* {
+  padding: 0;
+  margin: auto 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: "Ropa Sans", sans-serif;
+  font-weight: 400;
+  color: rgba(255, 214, 0, 1);
+}
+p,
+li {
+  font-family: "Roboto Flex", sans-serif;
+}
+.wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  margin: auto 0;
+}
+.headerbackground {
+  margin: auto 0;
+  min-height: 40%;
+  width: 100%;
+  background: url(https://s3-alpha-sig.figma.com/img/bb47/e2c3/a3fae2ef0c636e73f74801f44296aa74?Expires=1701043200&Signature=gZSIIViuw3vOXamGxYLnh205kd8ppY4JHedO2fVo5TqumPDQh42SmVEZ0UP1PPKQfcwgXcW-B8FDG9gR-7dOU7DyalFhfIAQUkh~p1ukF~EZKihxe~2pfHAwnxC8z7Ro3KR~V-XIOUPnVdfNq9pWfTMvpsPRrhxXy3qXFLghdG~nSAcQy~dHZFJC6oA7pRv4fQUaKB5FNMYEDiX1BW2z2doAkHT9M5mJnSDzGoTXABZ4gYYO21oDkrpX6Fs8pRcBAzTvoBK-YqkOz99JM3RfDgym15S9DNjPOvVCXHJOQfYhCVyiD~o5q08zOZuaxd7SEdmqJphYLvc9kXJnz8a~~w__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.headerbackground h1 {
+  font-size: 4rem;
+  letter-spacing: 0.5rem;
+  margin-top: 3%;
+  margin-left: 2%;
+}
+main {
+  background-color: #424242;
+  display: flex;
+  justify-content: center;
+  margin: auto 0;
+  width: 100%;
+  height: 40rem;
+  gap: 6%;
+}
+.main-section {
+  margin: 0;
+  z-index: 2;
+  position: relative;
+  top: -8%;
+  width: 28%;
+  max-width: 340px;
+  min-width: fit-content;
+  border-top-left-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
+  height: 100%;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+.main-section h2 {
+  padding: 1rem;
+  text-align: center;
+  letter-spacing: 0.2rem;
+  font-size: 2rem;
+  border-top-left-radius: 0.6rem;
+  border-top-right-radius: 0.6rem;
+}
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  margin-top: 40%;
+}
+.loading p {
+  font-size: 50px;
+}
+#characters {
+  background-color: rgba(196, 196, 196, 1);
+}
+#characters h2 {
+  background-color: rgba(83, 85, 86, 1);
+}
+
+#details h2 {
+  background-color: rgba(116, 134, 135, 1);
+}
+#detailsInfoTop {
+  background-color: rgba(196, 196, 196, 1);
+  min-height: 44%;
+  display: flex;
+  flex-direction: column;
+
+}
+#details{
+  min-height: 100%;
+}
+#detailsInfoBottom {
+  min-height: 44%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  color: white;
+  max-width: 340px;
+  background-color: rgba(142, 142, 142, 1);
+}
+#characterList >* {
+  padding: 0.5rem;
+  list-style: none;
+  font-family: "Roboto Flex", sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.2rem;
+  cursor: pointer;
+}
+#characterList :nth-child(1) {
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+#characterList :nth-child(even) {
+  background-color: rgba(225, 222, 222, 1);
+  color: rgba(83, 85, 86, 1);
+}
+
+#characterList :nth-child(odd) {
+  background-color: rgba(142, 142, 142, 1);
+  color: rgba(255, 255, 255, 1);
+}
+.active  {
+  background-color: #444444 !important; 
+  color: #ffffff !important;
+}
+#detailsList,
+#detailsListBottom{
+
+  list-style: none;
+  letter-spacing: 0.25rem;
+ padding-left: .5rem;
+}
+#nameHeader, #planetHeader{
+  font-size: 1.8rem;
+  letter-spacing: 0.25rem;
+
+}
+footer {
+  align-items: center;
+  justify-content: center;
+display: flex;
+  font-size: 1.875rem;
+  letter-spacing: 0.4rem;
+  
+}
+footer svg{
+  cursor: pointer;
+}
