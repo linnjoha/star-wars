@@ -67,6 +67,7 @@ main {
   border-top-right-radius: 0.6rem;
 }
 .loadingbox {
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -144,9 +145,11 @@ main {
   list-style: none;
   letter-spacing: 0.25rem;
   padding-left: 0.5rem;
+  margin: 1rem;
 }
 #nameHeader,
 #planetHeader {
+  margin: 0.5rem;
   font-size: 1.8rem;
   letter-spacing: 0.25rem;
 }

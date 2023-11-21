@@ -12,6 +12,8 @@ const paginationCounter = document.getElementById("paginationCounter");
 const backPageEl = document.getElementById("backPage");
 const nextPageEl = document.getElementById("nextPage");
 const paginationCounterEl = document.getElementById("paginationCounter");
+const spinner = document.querySelector(".loading");
+
 nextPageEl.addEventListener("click", () => {
   if (pageCounter < 9) {
     pageCounter++;
@@ -43,6 +45,8 @@ backPageEl.addEventListener("click", () => {
 const fetchCharacters = async (pageCounter) => {
   let url = `https://swapi.dev/api/people/?page=${pageCounter}`; //den sida vi är på visuellt == den page som ska hämtas
   paginationCounterEl.innerText = pageCounter;
+  //visa spinner
+  spinner.hidden = false;
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -61,6 +65,7 @@ const fetchCharacters = async (pageCounter) => {
   } catch (error) {
     console.error("Network Error:", error);
   }
+  spinner.hidden = true;
 };
 fetchCharacters(pageCounter);
 
@@ -98,7 +103,7 @@ const updateDetails = (character) => {
     let value = character[key];
     if (typeof value === "string" && !excludedKeys.includes(key)) {
       let listEl = document.createElement("li");
-      listEl.innerText = key + ": " + value;
+      listEl.innerText = key.replaceAll("_", " ") + ": " + value;
       detailsListEl.appendChild(listEl);
     }
   }
@@ -106,7 +111,7 @@ const updateDetails = (character) => {
     let value = character.homeworld[key];
     if (typeof value === "string" && !excludedKeys.includes(key)) {
       let listEl = document.createElement("li");
-      listEl.innerText = key + ": " + value;
+      listEl.innerText = key.replaceAll("_", " ") + ": " + value;
       detailsListBottomEl.appendChild(listEl);
     }
   }
