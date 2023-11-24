@@ -10,29 +10,28 @@ const backPageEl = document.getElementById("backPage");
 const nextPageEl = document.getElementById("nextPage");
 const paginationCounterEl = document.getElementById("paginationCounter");
 const spinner = document.querySelector(".loading");
-/*const planetBtnEl = document.getElementById("planetBtn");
-const speciesBtnEl = document.getElementById("speciesBtn");
-const vehiclesBtnEl = document.getElementById("vehiclesBtn");
-const starshipsBtnEl = document.getElementById("starshipsBtn");*/
 const detailsInfoBottomNavEL = document.getElementById("detailsInfoBottomNav");
 const detailsButtonsEl = document.querySelectorAll(".detailsButtons");
+
+//hanterar framåtklick
 nextPageEl.addEventListener("click", () => {
-  //hanterar framåtklick
   if (pageCounter < 9) {
     pageCounter++;
-    Array.from(characterListEl.children).forEach((child) => child.remove()); // resetar element
+    // resetar element på character
+    Array.from(characterListEl.children).forEach((child) => child.remove());
     Array.from([
       ...detailsListEl.children,
       ...detailsListBottomEl.children,
     ]).forEach((child) => child.remove());
     nameHeaderEL.innerText = "";
     planetHeaderEl.innerText = "";
-    fetchCharacters(pageCounter); // kör fetch med nya pagenumber som inparameter
+    // kör fetch med nya pagenumber som inparameter
+    fetchCharacters(pageCounter);
   }
 });
 
+// hanterar bakåtklick
 backPageEl.addEventListener("click", () => {
-  // hanterar bakåtklick
   if (pageCounter != 1) {
     pageCounter--;
     Array.from(characterListEl.children).forEach((child) => child.remove());
@@ -42,12 +41,15 @@ backPageEl.addEventListener("click", () => {
     ]).forEach((child) => child.remove());
     nameHeaderEL.innerText = "";
     planetHeaderEl.innerText = "";
-    fetchCharacters(pageCounter); // kör fetch med nya pagenumber som inparameter
+    // kör fetch med nya pagenumber som inparameter
+    fetchCharacters(pageCounter);
   }
 });
 
+//hämtar characters och deras species, vehicles och starships
+//den sida vi är på visuellt == den page som ska hämtas
 const fetchCharacters = async (pageCounter) => {
-  let url = `https://swapi.dev/api/people/?page=${pageCounter}`; //den sida vi är på visuellt == den page som ska hämtas
+  let url = `https://swapi.dev/api/people/?page=${pageCounter}`;
   paginationCounterEl.innerText = pageCounter;
   spinner.hidden = false; //visar spinner
   try {
@@ -63,6 +65,7 @@ const fetchCharacters = async (pageCounter) => {
       const homeworld = await response.json();
       character.homeworld = homeworld;
 
+      //fetch allt i key species
       let responseSpecies;
       let species;
       if (character.species[0]) {
@@ -72,9 +75,10 @@ const fetchCharacters = async (pageCounter) => {
         character.species = species;
       }
       console.log(character.species);
+
+      // kollar om det finns värde i key vehicles och i så fall hämtar
       if (character.vehicles[0]) {
         const vehicles = await Promise.all(
-          // kollar om det finns värde i key vehicles och i så fall hämtar
           character.vehicles.map(async (vehicle) => {
             const responseVehicles = await fetch(vehicle);
             return await responseVehicles.json();
@@ -96,7 +100,7 @@ const fetchCharacters = async (pageCounter) => {
       }
       console.log(character.starships);
 
-      addCharacter(characterList, character);
+      addCharacter(character);
     });
   } catch (error) {
     console.error("Network Error:", error);
@@ -104,43 +108,48 @@ const fetchCharacters = async (pageCounter) => {
   spinner.hidden = true;
 };
 let selectedCharacter;
-const addCharacter = (characterList, character) => {
+const addCharacter = (character) => {
   let listEl = document.createElement("li");
   listEl.innerText = character.name;
   characterListEl.appendChild(listEl);
   listEl.addEventListener("click", () => {
+    //resetar activestyling först innan lägger på nytt
     Array.from(characterListEl.children).forEach((child) =>
       child.classList.remove("active")
-    ); //resetar activestyling först innan lägger på nytt
-    listEl.classList.add("active"); // lägger till activestyling
-    console.log(listEl);
+    );
+    listEl.classList.add("active");
     selectedCharacter = character;
+    detailsButtonsEl.forEach((button) => {
+      button.classList.remove("detailsButtonsActive");
+    });
     updateDetails(character);
   });
 };
 fetchCharacters(pageCounter);
 
 //för varje click på details buttons
+
 detailsButtonsEl.forEach((button) => {
   const active = "detailsButtonsActive";
   button.addEventListener("click", (event) => {
+    //för varje knapp i listan av knappar ger vi deras id
     let clickedButton = document.getElementById(event.target.id);
+    //filtrerar ut om någon knapp har active och då remove, sedan lägger till styling active
     Array.from(detailsButtonsEl)
       .filter((f) => f !== clickedButton)
       .forEach((button) => button.classList.remove(active));
     clickedButton.classList.add(active);
-
-    console.log(selectedCharacter);
     updateDetails(selectedCharacter, clickedButton.id);
   });
 });
+
+//När men klickar på character hamnar man i denna funktion som uppdaterar informationen dom på details
 const updateDetails = (character, porp) => {
+  //lista för de key's som inte ska vara med i innertext
   const excludedKeys = [
-    //lista för de key's som inte ska vara med i innertext
     "created",
     "edited",
     "url",
-    "homeworld",
     "population",
     "surface_water",
     "name",
@@ -149,11 +158,13 @@ const updateDetails = (character, porp) => {
     "pilots",
     "MGLT",
   ];
+  // reseta listel
   Array.from([
     ...detailsListEl.children,
     ...detailsListBottomEl.children,
-  ]).forEach((child) => child.remove()); // reseta
+  ]).forEach((child) => child.remove());
 
+  //uppdaterar informationen om character för varje keyvalue i objektet character
   for (const key in character) {
     let value = character[key];
     if (typeof value === "string" && !excludedKeys.includes(key)) {
@@ -163,17 +174,17 @@ const updateDetails = (character, porp) => {
     }
   }
 
-  for (const key in character.porp ?? character.homeworld) {
-    let value = character.porp?.[key] ?? character.homeworld[key];
+  //uppdaterar på planet, species, vehicles, starships.
+  let name = "";
+
+  for (const key in character[porp]) {
+    let value = character[porp]?.[key];
     if (typeof value === "string" && !excludedKeys.includes(key)) {
+      name = character[porp]?.name;
       let listEl = document.createElement("li");
       listEl.innerText = key.replaceAll("_", " ") + ": " + value;
       detailsListBottomEl.appendChild(listEl);
     } else if (Array.isArray(character[porp])) {
-      Array.from([
-        ...detailsListEl.children,
-        ...detailsListBottomEl.children,
-      ]).forEach((child) => child.remove());
       character[porp].forEach((obj) => {
         console.log(character.porp);
         for (const key in obj) {
@@ -182,16 +193,21 @@ const updateDetails = (character, porp) => {
             let listEl = document.createElement("li");
             listEl.innerText = key.replaceAll("_", " ") + ": " + obj[key];
             detailsListBottomEl.appendChild(listEl);
+          } else if (key == "name") {
+            /*name = obj[key];
+            planetHeaderEl.innerText =
+              key.replaceAll("_", " ") + ": " + obj[key];*/
+            let nameHeader = document.createElement("p");
+            nameHeader.innerText = obj[key];
+            nameHeader.id = "planetHeader";
+            detailsListBottomEl.appendChild(nameHeader);
           }
         }
       });
     }
   }
+  planetHeaderEl.innerText = name; // namn placeras på eget el
   nameHeaderEL.innerText = character.name; // namn placeras på eget el
-  planetHeaderEl.innerText = character[porp]?.name ?? character.homeworld.name; // namn placeras på eget el
 };
 
-//att göra
-// planetheader
 //if length in array <0 scrollbar
-//
