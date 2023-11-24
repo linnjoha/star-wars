@@ -50,12 +50,11 @@ main {
   z-index: 2;
   position: relative;
   top: -8%;
-  width: 28%;
-  max-width: 340px;
+  width: 35%;
   min-width: fit-content;
   border-top-left-radius: 0.6rem;
   border-top-right-radius: 0.6rem;
-  height: 100%;
+  min-height: 100%;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 }
 .main-section h2 {
@@ -113,7 +112,7 @@ main {
   flex-direction: column;
   flex-wrap: wrap;
   color: white;
-  max-width: 340px;
+
   background-color: rgba(142, 142, 142, 1);
 }
 #characterList > * {
@@ -162,4 +161,30 @@ footer {
 }
 footer svg {
   cursor: pointer;
+}
+.detailsInfoBottomNav {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  margin: 0;
+}
+.detailsButtons {
+  z-index: 3;
+  position: relative;
+  top: -32px;
+  color: rgba(140, 118, 0, 1);
+  border: none;
+  width: 5rem;
+  height: 2rem;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-family: "Roboto Flex", sans-serif;
+  text-align: center;
+  letter-spacing: 0.18rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.detailsButtonsActive {
+  background-color: rgba(142, 142, 142, 1);
 }
