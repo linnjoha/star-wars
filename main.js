@@ -175,9 +175,7 @@ const updateDetails = (character, porp) => {
   for (const key in character) {
     let value = character[key];
     if (typeof value === "string" && !excludedKeys.includes(key)) {
-      let listEl = document.createElement("li");
-      listEl.innerText = key.replaceAll("_", " ") + ": " + value;
-      detailsListEl.appendChild(listEl);
+      createListElement(detailsListEl, key, value);
     }
   }
 
@@ -189,18 +187,14 @@ const updateDetails = (character, porp) => {
     let value = character[porp]?.[key];
     if (typeof value === "string" && !excludedKeys.includes(key)) {
       name = character[porp]?.name;
-      let listEl = document.createElement("li");
-      listEl.innerText = key.replaceAll("_", " ") + ": " + value;
-      detailsListBottomEl.appendChild(listEl);
+      createListElement(detailsListBottomEl, key, value);
     } else if (Array.isArray(character[porp])) {
       character[porp].forEach((obj) => {
         console.log(character.porp);
         for (const key in obj) {
-          console.log(key);
+          //  console.log(key);
           if (!excludedKeys.includes(key)) {
-            let listEl = document.createElement("li");
-            listEl.innerText = key.replaceAll("_", " ") + ": " + obj[key];
-            detailsListBottomEl.appendChild(listEl);
+            createListElement(detailsListBottomEl, key, obj[key]);
           } else if (key == "name") {
             let nameHeader = document.createElement("p");
             nameHeader.innerText = obj[key];
@@ -213,4 +207,10 @@ const updateDetails = (character, porp) => {
   }
   planetHeaderEl.innerText = name; // namn placeras på eget el
   nameHeaderEL.innerText = character.name; // namn placeras på eget el
+};
+
+const createListElement = (listelement, key, value) => {
+  let listEl = document.createElement("li");
+  listEl.innerText = key.replaceAll("_", " ") + ": " + value;
+  listelement.appendChild(listEl);
 };
