@@ -15,6 +15,7 @@ const detailsButtonsEl = document.querySelectorAll(".detailsButtons");
 
 //hanterar framåtklick
 nextPageEl.addEventListener("click", () => {
+  //om pagecounter är upp till 9 så ska framåtklick funka
   if (pageCounter < 9) {
     pageCounter++;
     // resetar element på character
@@ -32,6 +33,7 @@ nextPageEl.addEventListener("click", () => {
 
 // hanterar bakåtklick
 backPageEl.addEventListener("click", () => {
+  //om pagecounter inte är 1 så ska bakåtklick funka
   if (pageCounter != 1) {
     pageCounter--;
     Array.from(characterListEl.children).forEach((child) => child.remove());
@@ -74,7 +76,7 @@ const fetchCharacters = async (pageCounter) => {
         species = await responseSpecies.json();
         character.species = species;
       }
-      console.log(character.species);
+      // console.log(character.species);
 
       // kollar om det finns värde i key vehicles och i så fall hämtar
       if (character.vehicles[0]) {
@@ -86,8 +88,9 @@ const fetchCharacters = async (pageCounter) => {
         );
         character.vehicles = vehicles;
       }
-      console.log(character.vehicles);
+      //console.log(character.vehicles);
 
+      // kollar om det finns värde i key starships och i så fall hämtar
       if (character.starships[0]) {
         const starships = await Promise.all(
           character.starships.map(async (starship) => {
@@ -98,15 +101,16 @@ const fetchCharacters = async (pageCounter) => {
         );
         character.starships = starships;
       }
-      console.log(character.starships);
-
+      //console.log(character.starships);
       addCharacter(character);
     });
   } catch (error) {
     console.error("Network Error:", error);
   }
+  //döljer spinner
   spinner.hidden = true;
 };
+
 let selectedCharacter;
 const addCharacter = (character) => {
   let listEl = document.createElement("li");
@@ -119,16 +123,17 @@ const addCharacter = (character) => {
     );
     listEl.classList.add("active");
     selectedCharacter = character;
+    // tar bort activestyling om vi väljer en ny character
     detailsButtonsEl.forEach((button) => {
       button.classList.remove("detailsButtonsActive");
     });
     updateDetails(character);
   });
 };
+//programstart//
 fetchCharacters(pageCounter);
 
-//för varje click på details buttons
-
+//lägger till eventlisteners på alla knappar i classlist med knappar
 detailsButtonsEl.forEach((button) => {
   const active = "detailsButtonsActive";
   button.addEventListener("click", (event) => {
@@ -139,6 +144,8 @@ detailsButtonsEl.forEach((button) => {
       .filter((f) => f !== clickedButton)
       .forEach((button) => button.classList.remove(active));
     clickedButton.classList.add(active);
+
+    //skickar med character som här är selectedcharacter, samt knappen som blivit klickad på.
     updateDetails(selectedCharacter, clickedButton.id);
   });
 });
@@ -177,6 +184,7 @@ const updateDetails = (character, porp) => {
   //uppdaterar på planet, species, vehicles, starships.
   let name = "";
 
+  //använder details knappens id för att komma åt det vi vill i character
   for (const key in character[porp]) {
     let value = character[porp]?.[key];
     if (typeof value === "string" && !excludedKeys.includes(key)) {
@@ -194,9 +202,6 @@ const updateDetails = (character, porp) => {
             listEl.innerText = key.replaceAll("_", " ") + ": " + obj[key];
             detailsListBottomEl.appendChild(listEl);
           } else if (key == "name") {
-            /*name = obj[key];
-            planetHeaderEl.innerText =
-              key.replaceAll("_", " ") + ": " + obj[key];*/
             let nameHeader = document.createElement("p");
             nameHeader.innerText = obj[key];
             nameHeader.id = "planetHeader";
@@ -209,5 +214,3 @@ const updateDetails = (character, porp) => {
   planetHeaderEl.innerText = name; // namn placeras på eget el
   nameHeaderEL.innerText = character.name; // namn placeras på eget el
 };
-
-//if length in array <0 scrollbar
